@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vn">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <!--font-->
+    <!--Pacifico for title-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+    <!--Roboto for text-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!--Josefin Sans for text-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <!--Css-->
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+      <!-- HTML layout -->
+      <div id="main_title" class="main_title">To-Do List</div>
+      <div id="main_content" class="main_content">
+          <div id="Add_bar" class="Add_bar">
+              <input type="text" id="Input_bar" class="Input_bar" placeholder="Type your To-Do"/>
+              <input type="date" id="Date_bar" class="Date_bar"/>
+              <button id="Add" class="Add" onclick="addtodo()">Add To-Do</button>
+          </div>
+          <div id="Content_title" class="Content_title">
+              <p class="Things_title">Things</p>
+              <p class="Due-date_title">Due Date</p>
+              <p class="Status">Status</p>
+          </div>
+          <div id="Things_lists" class="Things_lists"></div>
+      </div>
+
+    <!-- HTML layout -->
+    <script>
+        let listtodo=[];
+        let savedtodo=JSON.parse(localStorage.getItem('todo'));
+        if (Array.isArray(savedtodo))
+            {listtodo = savedtodo;
+            console.log('deo');
+            console.log(savedtodo);}
+        else listtodo=[];
+        renderlist();
+        const addtodo=() =>
+        {
+            const textbox = document.getElementById("Input_bar");
+            const duedate = document.getElementById("Date_bar");
+            const iden= '' + new Date().getTime();
+            let status=0;
+            listtodo.push({title: textbox.value, date: duedate.value, iden: iden, status: status});
+            console.log(listtodo);
+            savetodo();
+            renderlist();
+
+        }
+
+        function renderlist()
+        {
+            divmain = document.getElementById('Things_lists');
+            // reset the list
+            divmain.innerHTML = '';
+
+            listtodo.forEach (function (thing)
+            {
+             titlediv = document.createElement('div'); //createElement -> Only 1
+                titlediv.style='font-family: Roboto; font-size: 20px; border: 0x solid black; height: 32px; border-radius: 15px; background-color: #FF5757; text-align: center; margin-right: 10px; opacity: 0.8; padding-top: 5px;';
+             datediv = document.createElement('div');
+                datediv.style='font-family: Roboto; font-size: 20px; border: 0px solid black; height: 30px; border-radius: 15px; background-color: none; text-align: center; margin-right: 10px; font-weight: bold;';
+             statusbutton = document.createElement('button');
+                if (thing.status === 0)
+                {statusbutton.innerText = 'Still On';
+                statusbutton.style='font-family: Roboto; font-size: 20px; border: 0px solid black; height: 35px; border-radius: 15px; background-color: #F42626; text-align: center; margin-right: 10px; font-weight: bold; cursor: pointer;';
+                }
+                else if (thing.status === 1)
+                {statusbutton.innerText = 'Done';
+                 statusbutton.style='font-family: Roboto; font-size: 20px; border: 0px solid black; height: 35px; border-radius: 15px; background-color: lightgreen; text-align: center; margin-right: 10px; font-weight: bold; cursor: pointer;';
+                }
+                else return 0;
+
+                statusbutton.id = thing.iden;
+                statusbutton.onclick= done;
+             deletebutton = document.createElement('button');
+                deletebutton.innerText = 'X';
+                deletebutton.style='font-family: Roboto; font-size: 20px; border: 0px solid black; height: 35px; border-radius: 15px; background-color: #F42626; text-align: center; margin-right: 10px; font-weight: bold; cursor: pointer;';
+                deletebutton.onclick = delete1;
+                deletebutton.id = thing.iden;
+
+                titlediv.innerHTML = thing.title;
+                datediv.innerHTML = thing.date;
+                divmain.appendChild(titlediv);
+                divmain.appendChild(deletebutton);
+                divmain.appendChild(datediv);
+                divmain.appendChild(statusbutton);
+
+                console.log(statusbutton.id);
+            });
+        }
+         function done (event)
+         {
+               const clickedbutton = event.target;
+               console.log(clickedbutton.id);
+               listtodo.forEach( function (thing)
+               {
+                   //thing.iden is a number but clickedbutton.id is a string
+                   if (clickedbutton.innerText === 'Still On' && thing.iden === clickedbutton.id)
+                     { clickedbutton.innerText = 'Done';
+                       clickedbutton.style='font-family: Roboto; font-size: 20px; border: 0px solid black; height: 35px; border-radius: 15px; background-color: lightgreen; text-align: center; margin-right: 10px; font-weight: bold; cursor: pointer;';
+                       thing.status=1;
+                     }
+                   else if (clickedbutton.innerText === 'Done' && thing.iden === clickedbutton.id)
+                     { clickedbutton.innerText = 'Still On';
+                       clickedbutton.style='font-family: Roboto; font-size: 20px; border: 0px solid black; height: 35px; border-radius: 15px; background-color: #F42626; text-align: center; margin-right: 10px; font-weight: bold; cursor: pointer;';
+                       thing.status=0;
+                     }
+                    else return 0;
+               });
+               savetodo();
+         }
+
+         function delete1(event)
+         {
+                const clickedbutton = event.target;
+                listtodo = listtodo.filter ( function (thing)
+                {
+                    if (thing.iden === clickedbutton.id)
+                        return false;
+                    else
+                        return true;
+                });
+                savetodo();
+                renderlist();
+
+         }
+
+         function savetodo()
+         {
+            const savedstring = JSON.stringify(listtodo);
+            localStorage.setItem('todo', savedstring);
+            console.log('da save');
+            console.log(savedstring);
+            console.log(localStorage.getItem('todo'));
+         }
+    </script>
+
+</body>
+</html>

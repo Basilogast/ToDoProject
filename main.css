@@ -1,0 +1,83 @@
+p
+{
+text-align: center;
+font-family: Pacifico;
+font-weight: bold;
+font-size: 25px;
+color: #5F271E;
+}
+
+body
+{
+background-image: url("To-Do img/Add To-Do bg.png");
+background-size: cover;
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+
+.main_title
+{
+font-family: Pacifico;
+font-size: 80px;
+color: #5F271E;
+text-align: center;
+}
+.Add_bar
+{
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+}
+    .Input_bar
+    {
+    flex: 1;
+    max-width: 800px;
+    width: 0;
+    height: 30px;
+    border: 3px solid black;
+    border-radius: 15px;
+    margin-right: 10px;
+    background-color: white;
+    font-family: Roboto;
+    font-size: 15px;
+    padding-left: 10px;
+    }
+    .Add
+    {
+    width: 200px;
+    height: 38px;
+    border: 3px solid black;
+    border-radius: 19px;
+    background-color: #FF5757;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    }
+    .Date_bar
+    {
+    height: 32px;
+    border: 3px solid black;
+    border-radius: 16px;
+    margin-right: 10px;
+    font-family: Roboto;
+    font-size: 15px;
+    }
+.Content_title
+{
+display: grid;
+grid-template-columns: 800px 1fr 1fr;
+justify-content: center;
+align-items: center;
+margin-left: 70px;
+}
+.Things_lists
+{
+display: grid;
+grid-template-columns: 770px 50px 1fr 1fr;
+row-gap: 10px;
+align-items: center;
+justify-content: center;
+margin-left: 50px;
+}
